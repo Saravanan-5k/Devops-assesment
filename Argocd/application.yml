@@ -1,0 +1,19 @@
+                                                                                    application.yaml                                                                                               apiVersion: argoproj.io/v1alpha1
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-rails-app
+  namespace: argocd
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/Saravanan-5k/Argocd.gitO
+    targetRevision: HEAD
+    path: kubernetes
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
