@@ -1,0 +1,46 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-and-push-pipeline
+spec:
+  tasks:
+    - name: git-clone-task
+      taskRef:
+        name: git-clone
+      resources:
+        inputs:
+          - name: repo
+            resourceRef:
+              name: git-repo
+      params:
+        - name: url
+          value: https://github.com/Saravanan-5k/Devops-assesment.git
+        - name: revision
+          value: "main"
+    
+    - name: kaniko-build-task
+      taskRef:
+        name: kaniko
+      resources:
+        inputs:
+          - name: source
+            resourceRef:
+              name: git-repo
+      params:
+        - name: IMAGE
+          value: "docker.io/saravanan003/my-rails-app:latest"
+        - name: DOCKERFILE
+          value: "/workspace/source/Dockerfile"
+      volumeMounts:
+        - name: kaniko-secret
+          mountPath: /secret
+          readOnly: true
+
+    - name: push-image
+      taskRef:
+        name: docker-push
+      resources:
+        inputs:
+          - name: image
+            resourceRef:
+              name: image-push

@@ -1,0 +1,9 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineResource
+metadata:
+  name: image-push
+spec:
+  type: image
+  params:
+    - name: url
+      value: "docker.io/your-dockerhub-saravanan003/my-rails-app"
